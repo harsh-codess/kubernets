@@ -1,51 +1,140 @@
-### Repository for the K8s in 1 hour video
+# Kubernetes Demo Application
 
-#### K8s manifest files 
-* mongo-config.yaml
-* mongo-secret.yaml
-* mongo.yaml
-* webapp.yaml
+A complete Kubernetes deployment example featuring a MongoDB database and a web application.
 
-#### K8s commands
+## 📁 Project Structure
 
-##### start Minikube and check status
-    minikube start --vm-driver=hyperkit 
-    minikube status
+This repository contains the following Kubernetes manifest files:
 
-##### get minikube node's ip address
-    minikube ip
+| File | Description |
+|------|-------------|
+| `mongo-config.yaml` | ConfigMap for MongoDB configuration |
+| `mongo-secret.yaml` | Secret for MongoDB credentials |
+| `mongo.yaml` | MongoDB deployment and service |
+| `webapp.yaml` | Web application deployment and service |
 
-##### get basic info about k8s components
-    kubectl get node
-    kubectl get pod
-    kubectl get svc
-    kubectl get all
+## 🚀 Getting Started
 
-##### get extended info about components
-    kubectl get pod -o wide
-    kubectl get node -o wide
+### Prerequisites
+- [Minikube](https://minikube.sigs.k8s.io/docs/start/) installed
+- [kubectl](https://kubernetes.io/docs/tasks/tools/) installed
+- Docker or VirtualBox (for Minikube driver)
 
-##### get detailed info about a specific component
-    kubectl describe svc {svc-name}
-    kubectl describe pod {pod-name}
+### Setup Instructions
 
-##### get application logs
-    kubectl logs {pod-name}
-    
-##### stop your Minikube cluster
-    minikube stop
+1. **Start Minikube**
+   ```bash
+   minikube start
+   minikube status
+   ```
 
-<br />
+2. **Deploy the application**
+   ```bash
+   kubectl apply -f mongo-config.yaml
+   kubectl apply -f mongo-secret.yaml
+   kubectl apply -f mongo.yaml
+   kubectl apply -f webapp.yaml
+   ```
 
-> :warning: **Known issue - Minikube IP not accessible** 
+3. **Access the application**
+   ```bash
+   minikube service webapp-service
+   ```
 
-If you can't access the NodePort service webapp with `MinikubeIP:NodePort`, execute the following command:
-    
-    minikube service webapp-service
+## 📋 Useful Commands
 
-<br />
+### Cluster Management
+```bash
+# Start Minikube
+minikube start
 
-#### Links
-* mongodb image on Docker Hub: https://hub.docker.com/_/mongo
-k8s-demo-app
+# Check cluster status
+minikube status
+
+# Get cluster IP
+minikube ip
+
+# Stop Minikube
+minikube stop
+```
+
+### Resource Management
+```bash
+# Get basic info about components
+kubectl get nodes
+kubectl get pods
+kubectl get services
+kubectl get all
+
+# Get detailed info with extended output
+kubectl get pods -o wide
+kubectl get nodes -o wide
+
+# Describe specific resources
+kubectl describe service {service-name}
+kubectl describe pod {pod-name}
+
+# View application logs
+kubectl logs {pod-name}
+```
+
+### Debugging & Troubleshooting
+```bash
+# Check pod status and events
+kubectl get pods --watch
+
+# Get detailed pod information
+kubectl describe pod {pod-name}
+
+# Access pod shell
+kubectl exec -it {pod-name} -- /bin/bash
+
+# Port forwarding for local testing
+kubectl port-forward service/{service-name} {local-port}:{service-port}
+```
+
+## 🛠 Troubleshooting
+
+### Common Issues
+
+**Issue: Minikube IP not accessible**
+```bash
+# Solution: Use minikube service command
+minikube service webapp-service
+```
+
+**Issue: Pods stuck in Pending state**
+```bash
+# Check node resources
+kubectl describe nodes
+
+# Check pod events
+kubectl describe pod {pod-name}
+```
+
+**Issue: ImagePullBackOff errors**
+```bash
+# Check if images are available
+kubectl describe pod {pod-name}
+
+# For Minikube, use local Docker daemon
+eval $(minikube docker-env)
+```
+
+## 🔗 Resources
+
+- [MongoDB Docker Image](https://hub.docker.com/_/mongo)
+- [Kubernetes Documentation](https://kubernetes.io/docs/)
+- [Minikube Documentation](https://minikube.sigs.k8s.io/docs/)
+
+## 📝 Notes
+
+This demo application is designed for learning purposes and demonstrates:
+- ConfigMaps and Secrets management
+- Multi-tier application deployment
+- Service networking
+- Basic Kubernetes concepts
+
+---
+*Last updated: January 2026*
 
